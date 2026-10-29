@@ -326,7 +326,7 @@ class ListItemMonitor(threading.Thread):
                     details = merge_dict(details,
                                          self.get_directors_writers_cast(details["director"], details["writer"], details["cast"]))
                     if self.enable_extrafanart:
-                        #log_msg("skin.helper.service: extrafanart", xbmc.LOGINFO)
+                        log_msg("skin.helper.service: extrafanart", xbmc.LOGINFO)
                         if not details["filenameandpath"]:
                             details["filenameandpath"] = details["path"]
                         if "plugin://" in details["path"]:
@@ -371,8 +371,11 @@ class ListItemMonitor(threading.Thread):
                         details = merge_dict(
                             details, self.metadatautils.get_tvdb_details(
                                 details["imdbnumber"], tvdbid))
-                     # tvshows-only properties (metacritic)
-                    if content_type in ["movie", "movies", "tvshow", "tvshows"]:
+                    # movie-rating properties (rt)
+                    if content_type in ["tvshow", "tvshows"]:
+                        details = merge_dict(details, self.metadatautils.get_rt_ratings((details["title"]), content_type))
+                    # tvshows-only properties (metacritic)
+                    if content_type in ["tvshow", "tvshows"]:
                         details = merge_dict(details, self.metadatautils.get_metacritic_info((details["title"]), content_type))
                     if content_type in ["movie", "movies", "tvshow", "tvshows"]:
                         details = merge_dict(details, self.metadatautils.get_tunes_info((details["title"]), content_type, details["year"]))

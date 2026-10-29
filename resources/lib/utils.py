@@ -79,10 +79,7 @@ def try_encode(text, encoding="utf-8"):
 
 def try_decode(text, encoding="utf-8"):
     '''helper to decode a string into unicode'''
-    try:
-        return text.decode(encoding, "ignore")
-    except Exception:
-        return text
+    return text
 
 def urlencode(text):
     '''urlencode a string'''
