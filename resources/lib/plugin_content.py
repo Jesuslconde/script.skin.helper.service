@@ -76,12 +76,15 @@ class PluginContent:
             paramstring += ",%s=%s" % (key, value)
         if getCondVisibility("System.HasAddon(%s)" % newaddon):
             # TEMP !!! for backwards compatability reasons only - to be removed in the near future!!
-            import imp
+            import importlib.util
             addon = xbmcaddon.Addon(newaddon)
             addon_path = try_decode(addon.getAddonInfo('path'))
-            imp.load_source('plugin', os.path.join(addon_path, "plugin.py"))
-            from plugin import main
-            main.Main()
+            plugin_path = os.path.join(addon_path, "plugin.py")
+            spec = importlib.util.spec_from_file_location("plugin", plugin_path)
+            plugin = importlib.util.module_from_spec(spec)
+            sys.modules["plugin"] = plugin
+            spec.loader.exec_module(plugin)
+            plugin.main.Main()
             del addon
         else:
             # trigger install of the addon
