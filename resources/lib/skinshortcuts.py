@@ -381,7 +381,7 @@ def playlists_widgets():
                     xmldata = xmltree.fromstring(try_encode(contents_data))
                     media_type = ""
                     label = item["label"]
-                    for line in xmldata.getiterator():
+                    for line in xmldata.iter():
                         if line.tag == "smartplaylist":
                             media_type = line.attrib['type']
                         if line.tag == "name":
